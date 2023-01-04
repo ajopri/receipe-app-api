@@ -63,7 +63,7 @@ class PrivateIngredientsApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
-    def test_ingredient_limited_to_user(self):
+    def test_ingredients_limited_to_user(self):
         """Test list of ingredients is limited to authenticated user"""
         user2 = create_user(email='user2@example.com')
         Ingredient.objects.create(user=user2, name='Salt')
@@ -89,7 +89,7 @@ class PrivateIngredientsApiTests(TestCase):
         self.assertEqual(ingredient.name, payload['name'])
 
     def test_delete_ingredient(self):
-        """Test deleting ingredient"""
+        """Test deleting an ingredient"""
         ingredient = Ingredient.objects.create(user=self.user, name='Lettuce')
 
         url = detail_url(ingredient.id)
@@ -100,7 +100,7 @@ class PrivateIngredientsApiTests(TestCase):
         self.assertFalse(ingredients.exists())
 
     def test_filter_ingredients_assigned_to_recipes(self):
-        """Test listing ingredients by those assigned to recipes"""
+        """Test listing ingredients to those assigned to recipes"""
         in1 = Ingredient.objects.create(user=self.user, name='Apples')
         in2 = Ingredient.objects.create(user=self.user, name='Turkey')
         recipe = Recipe.objects.create(
@@ -123,13 +123,13 @@ class PrivateIngredientsApiTests(TestCase):
         ing = Ingredient.objects.create(user=self.user, name='Eggs')
         Ingredient.objects.create(user=self.user, name='Lentils')
         recipe1 = Recipe.objects.create(
-            title="Eggs Benedict",
+            title='Eggs Benedict',
             time_minutes=60,
             price=Decimal('7.00'),
             user=self.user
         )
         recipe2 = Recipe.objects.create(
-            title="Herb Eggs",
+            title='Herb Eggs',
             time_minutes=20,
             price=Decimal('4.00'),
             user=self.user

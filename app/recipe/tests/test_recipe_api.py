@@ -37,6 +37,7 @@ def image_upload_url(recipe_id):
     """Create and return an image upload url"""
     return reverse('recipe:recipe-upload-image', args=[recipe_id])
 
+
 def create_recipe(user, **params):
     """Create and return a sampe recipe"""
     defaults = {
@@ -71,7 +72,7 @@ class PublicRecipeAPITests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-class PrivateRecipeAPITests(TestCase):
+class PrivateRecipeApiTests(TestCase):
     """Tests authenticated API requests"""
 
     def setUp(self):
@@ -162,9 +163,9 @@ class PrivateRecipeAPITests(TestCase):
         )
 
         payload = {
-            'title': 'Vew Recipe title',
+            'title': 'New Recipe title',
             'link': 'https://example.com/recipe.pdf',
-            'description': 'New receipe description',
+            'description': 'New recipe description',
             'time_minutes': 10,
             'price': Decimal('2.50')
         }
@@ -180,7 +181,7 @@ class PrivateRecipeAPITests(TestCase):
     def test_update_user_returns_error(self):
         """Test changing the recipe user results in an error"""
 
-        new_user = create_user(email='user@ecample.com', password='test123')
+        new_user = create_user(email='user2@example.com', password='test123')
         recipe = create_recipe(user=self.user)
 
         payload = {'user': new_user.id}
@@ -264,7 +265,7 @@ class PrivateRecipeAPITests(TestCase):
         """Test creating tag when updating a recipe"""
         recipe = create_recipe(user=self.user)
 
-        payload = { 'tags': [{'name': 'Lunch'}]}
+        payload = {'tags': [{'name': 'Lunch'}]}
         url = detail_url(recipe.id)
         res = self.client.patch(url, payload, format='json')
 
@@ -279,7 +280,7 @@ class PrivateRecipeAPITests(TestCase):
         recipe.tags.add(tag_breakfast)
 
         tag_lunch = Tag.objects.create(user=self.user, name='Lunch')
-        payload = {'tags':[{'name': 'Lunch'}]}
+        payload = {'tags': [{'name': 'Lunch'}]}
         url = detail_url(recipe.id)
         res = self.client.patch(url, payload, format='json')
 
@@ -289,7 +290,7 @@ class PrivateRecipeAPITests(TestCase):
 
     def test_clear_recipe_tags(self):
         """Test clearing a recipes tags"""
-        tag = Tag.objects.create(user=self.user, name="Dessert")
+        tag = Tag.objects.create(user=self.user, name='Dessert')
         recipe = create_recipe(user=self.user)
         recipe.tags.add(tag)
 

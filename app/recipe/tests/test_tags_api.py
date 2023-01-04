@@ -29,7 +29,7 @@ def create_user(email='user@example.com', password='test123'):
     return get_user_model().objects.create_user(email=email, password=password)
 
 
-class PublicTagApiTests(TestCase):
+class PublicTagsApiTests(TestCase):
     """Test unauthenticated API request"""
 
     def setUp(self):
@@ -52,7 +52,6 @@ class PrivateTagsApiTests(TestCase):
 
     def test_retrieve_tags(self):
         """Test retrieving a list of tags"""
-
         Tag.objects.create(user=self.user, name='Vegan')
         Tag.objects.create(user=self.user, name='Dessert')
 
